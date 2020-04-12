@@ -12,13 +12,15 @@ import java.time.LocalDateTime
 @RequestMapping("cars")
 class CarRestController(private val carRepository: CarRepository) {
 
+    // 車作成リクエスト
     data class CarPostRequest(val name: String, val bodyType: BodyType, val price: Long) {
-        fun toEntity(userId: Long): Car {
+        fun toEntity(userId: Int): Car {
             return Car(null, name, bodyType, price, userId, LocalDateTime.now(), userId, LocalDateTime.now())
         }
     }
 
-    data class CarResponse(val id: Long, val name: String, val bodyName: String, val price: String, val taxRate: Double, val taxPrice: String) {
+    // 車表示レスポンス
+    data class CarResponse(val id: Int, val name: String, val bodyName: String, val price: String, val taxRate: Double, val taxPrice: String) {
         companion object {
             fun create(car: Car): CarResponse {
                 return CarResponse(
@@ -39,20 +41,20 @@ class CarRestController(private val carRepository: CarRepository) {
     }
 
     @GetMapping("/{id}")
-    fun read(@PathVariable id: Long): CarResponse {
+    fun read(@PathVariable id: Int): CarResponse {
         return carRepository.findById(id)
                 .map { car -> CarResponse.create(car) }
                 .orElseThrow { NotFoundException("ない") }
     }
 
     data class CarPutRequest(val name: String, val price: Long) {
-        fun toEntity(userId: Long, car: Car): Car {
+        fun toEntity(userId: Int, car: Car): Car {
             return Car(car.id, name, car.bodyType, price, car.createUserId, car.createdDateTime, userId, LocalDateTime.now())
         }
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody request: CarPutRequest): CarResponse {
+    fun update(@PathVariable id: Int, @RequestBody request: CarPutRequest): CarResponse {
         return carRepository.findById(id)
                 .map { car -> carRepository.save(request.toEntity(getLoginUserId(), car)) }
                 .map { car -> CarResponse.create(car) }
@@ -60,13 +62,13 @@ class CarRestController(private val carRepository: CarRepository) {
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long) {
+    fun delete(@PathVariable id: Int) {
         carRepository.deleteById(id)
     }
 
     // ログイン情報を取得するような処理
-    fun getLoginUserId(): Long {
-        return 10
+    fun getLoginUserId(): Int {
+        return 1
     }
 }
 

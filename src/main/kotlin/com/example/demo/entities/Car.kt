@@ -8,10 +8,10 @@ import javax.persistence.*
 @Entity
 @Table(name = "cars")
 data class Car(
-        // 識別ID
+        // 車ID(識別ID)
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long?,
+        val id: Int?,
         // 車の名前
         @Column(length = 100, nullable = false)
         val name: String,
@@ -24,13 +24,13 @@ data class Car(
         val price: Long,
         // 作成者ID
         @Column(nullable = false)
-        val createUserId: Long,
+        val createUserId: Int,
         // 作成日時
         @Column(nullable = false)
         val createdDateTime: LocalDateTime,
         // 更新者ID
         @Column(nullable = false)
-        val updateUserId: Long,
+        val updateUserId: Int,
         // 更新日時
         @Column(nullable = false)
         val updatedDateTime: LocalDateTime
