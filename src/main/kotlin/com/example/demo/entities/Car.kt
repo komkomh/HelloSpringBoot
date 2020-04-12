@@ -33,7 +33,10 @@ data class Car(
         val updateUserId: Int,
         // 更新日時
         @Column(nullable = false)
-        val updatedDateTime: LocalDateTime
+        val updatedDateTime: LocalDateTime,
+        @ManyToOne(optional = false)
+        @JoinColumn(name = "createUserId", referencedColumnName = "id", insertable = false, updatable = false)
+        val createUser: User
 ) : Serializable
 
 // ボディタイプを表現する
