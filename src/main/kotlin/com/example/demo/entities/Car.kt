@@ -40,7 +40,7 @@ data class Car(
         @JoinColumn(name = "createUserId", referencedColumnName = "id", insertable = false, updatable = false)
         val createUser: User,
         @OneToMany(mappedBy = "car", cascade = [CascadeType.ALL], orphanRemoval = true)
-        @Fetch(FetchMode.JOIN)
+        @Fetch(FetchMode.SUBSELECT)
         var parts: MutableList<Part>
 ) : Serializable
 
