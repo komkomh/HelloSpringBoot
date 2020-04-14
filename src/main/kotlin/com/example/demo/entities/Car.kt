@@ -1,5 +1,7 @@
 package com.example.demo.entities
 
+import org.hibernate.annotations.Fetch
+import org.hibernate.annotations.FetchMode
 import java.io.Serializable
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -8,7 +10,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "cars")
 data class Car(
-        // 車ID(識別ID)
+        // 車ID
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Int?,
@@ -36,10 +38,13 @@ data class Car(
         val updatedDateTime: LocalDateTime,
         @ManyToOne(optional = false)
         @JoinColumn(name = "createUserId", referencedColumnName = "id", insertable = false, updatable = false)
-        val createUser: User
+        val createUser: User,
+        @OneToMany(mappedBy = "car", cascade = [CascadeType.ALL], orphanRemoval = true)
+        @Fetch(FetchMode.JOIN)
+        var parts: MutableList<Part>
 ) : Serializable
 
-// ボディタイプを表現する
+// 車種を表現する
 enum class BodyType(val view: String, val taxRate: Double) {
     Kei("軽自動車", 1.08),
     Sedan("セダン", 1.1),
