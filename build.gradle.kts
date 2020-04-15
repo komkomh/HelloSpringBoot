@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "1.3.71"
     kotlin("plugin.spring") version "1.3.71"
     kotlin("plugin.jpa") version "1.3.71"
+    kotlin("kapt") version "1.3.70"
 }
 
 group = "com.example"
@@ -26,6 +27,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
+    kapt("org.hibernate:hibernate-jpamodelgen")
 }
 
 tasks.withType<Test> {
