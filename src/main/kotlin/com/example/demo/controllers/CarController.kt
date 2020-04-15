@@ -1,5 +1,6 @@
 package com.example.demo.controllers
 
+import com.example.demo.entities.BodyType
 import com.example.demo.entities.User
 import com.example.demo.exceptions.NotFoundException
 import com.example.demo.repositories.CarRepository
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("cars")
 class CarRestController(private val carRepository: CarRepository) {
 
-    @GetMapping("/search")
-    fun search(): List<CarResponse> {
-        return carRepository.findAll().map { car -> CarResponse.create(car) }
+    @GetMapping("/simple_search/{carId}")
+    fun simpleSearch(@PathVariable carId: Int): List<CarResponse> {
+        return carRepository.simpleSearch(carId)
+                .map { car -> CarResponse.create(car) }
     }
 
     @PostMapping("/")
