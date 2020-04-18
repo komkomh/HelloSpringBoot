@@ -1,5 +1,7 @@
 package com.example.demo.controllers
 
+import com.example.demo.entities.BodyType
+import com.example.demo.entities.PartType
 import com.example.demo.entities.User
 import com.example.demo.exceptions.NotFoundException
 import com.example.demo.repositories.CarRepository
@@ -7,16 +9,15 @@ import com.example.demo.requests.CarDetailSearchRequest
 import com.example.demo.requests.CarPostRequest
 import com.example.demo.requests.CarPutRequest
 import com.example.demo.responses.CarResponse
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("cars")
 class CarRestController(private val carRepository: CarRepository) {
 
-    @GetMapping("/simple_search/{carId}")
-    fun simpleSearch(@PathVariable carId: Int): List<CarResponse> {
-        return carRepository.simpleSearch(carId)
+    @GetMapping("/simple_search/{bodyType}/{partType}")
+    fun simpleSearch(@PathVariable bodyType: String, @PathVariable partType: String): List<CarResponse> {
+        return carRepository.findByBodyTypeAndPartsPartType(BodyType.valueOf(bodyType), PartType.valueOf(partType))
                 .map { car -> CarResponse.create(car) }
     }
 
